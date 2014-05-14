@@ -47,8 +47,8 @@ Builder.load_string('''
 ''')
 
 class CheckControl(BaseControl):
-    label = StringProperty('Test')
-    description = StringProperty('Description\n2 lines')
+    label = StringProperty('')
+    description = StringProperty('')
     value = BooleanProperty(False)
     checkbox = ObjectProperty()
 

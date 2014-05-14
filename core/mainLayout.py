@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -81,7 +82,6 @@ class MainLayout(BoxLayout):
     subtitle = StringProperty()
     screen_manager = ObjectProperty()
 
-
     def __init__(self, **kwargs):
         super(MainLayout, self).__init__(**kwargs)
         self.main_screen = MainScreen(mainLayout=self)
@@ -92,6 +92,11 @@ class MainLayout(BoxLayout):
         self.screen_manager.add_widget(self.category_screen)
         self.screen_manager.add_widget(self.experiment_layout)
         self.screen_manager.current = 'main'
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, scancode, codepoint, modifier):
+        if key == 8:  # Backspace
+            self.go_main()
 
     def go_main(self, *largs):
         self.screen_manager.current = 'main'
@@ -107,8 +112,8 @@ class MainLayout(BoxLayout):
         self.screen_manager.current = self.category_screen.name
 
     def open_experiment(self, category, name):
-        self.screen_manager.current = self.experiment_layout.name
         self.experiment_layout.load_experiment(category, name)
+        self.screen_manager.current = self.experiment_layout.name
 
 
     pass

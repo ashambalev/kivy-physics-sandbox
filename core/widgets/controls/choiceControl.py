@@ -51,8 +51,8 @@ Builder.load_string('''
 
 
 class ChoiceControl(BaseControl):
-    label = StringProperty('Test')
-    description = StringProperty('Description')
+    label = StringProperty('')
+    description = StringProperty('')
     choices = ListProperty(['test', 'test2', 'test3'])
     value = StringProperty('test')
     spinner = ObjectProperty()

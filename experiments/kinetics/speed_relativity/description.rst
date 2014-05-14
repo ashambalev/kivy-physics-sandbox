@@ -2,8 +2,6 @@
 Speed relativity
 ==================
 
-Header
----------
 
 1) An enumerated list item
 

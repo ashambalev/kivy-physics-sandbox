@@ -3,6 +3,7 @@ import json
 import os
 from kivy.core.image import Image
 from kivy.lang import Builder
+from kivy.metrics import sp
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.popup import Popup
@@ -13,8 +14,8 @@ __author__ = 'gipzo'
 Builder.load_string('''
 <CatalogItem>:
     size_hint: None, None
-    height: '128sp'
-    width: '250sp'
+    height: '168sp'
+    width: '300sp'
 
     canvas:
         StencilPush
@@ -56,8 +57,8 @@ class CatalogItem(ButtonBehavior, Widget):
     name = StringProperty()
     title = StringProperty()
     icon = StringProperty()
-    text_padding = NumericProperty(8)
-    text_height = NumericProperty(32)
+    text_padding = NumericProperty(sp(8))
+    text_height = NumericProperty(sp(32))
     icon_texture = ObjectProperty()
 
     def load(self, path, file):

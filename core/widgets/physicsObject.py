@@ -2,43 +2,52 @@
 import collections
 import math
 
-from kivy.graphics import *
-from kivy.properties import NumericProperty, StringProperty, ListProperty
-from kivy.uix.label import Label
+from kivy.lang import Builder
+from kivy.properties import NumericProperty, StringProperty, ListProperty, BooleanProperty
 from kivy.uix.widget import Widget
+from core.widgets.vectorWidget import VectorWidget
 
-
-class Vector(object):
-    title = ''
-    length = 0.0
-    angle = 0.0
-    mode = 'object'
-    color = (1, 1, 1, 1)
-
-    def __init__(self, title, length, angle, color, mode):
-        self.title = title
-        self.length = length
-        self.angle = angle
-        self.color = color
-        self.mode = mode
+Builder.load_string('''
+<PhysicsObject>:
+    canvas:
+        PushMatrix
+        Color:
+            rgba: 1, 1, 1, 0.6 if self.show_trajectory else 0.0
+        Line:
+            points: [self.x, self.y] + [x for t in self._trajectory for x in t]
+            width: 2
+        Translate:
+            xy: self.pos
+        Rotate:
+            angle: -self.angle
+            axis: 0, 0, 1
+        Color:
+            rgba: self.color
+        Rectangle:
+            size: self.size[0]*self.scale, self.size[1]*self.scale
+            pos: -self.width/2.0*self.scale, -self.height/2.0*self.scale
+            source: self.source
+        PopMatrix
+''')
 
 
 class PhysicsObject(Widget):
     angle = NumericProperty()
+    scale = NumericProperty(1.0)
     source = StringProperty()
     color = ListProperty([1, 1, 1, 1])
+    constraints = [0, 100, 0, 100]
+    constraint_x = BooleanProperty(True)
+    constraint_y = BooleanProperty(True)
     _vectors = {}
-    _vector_labels = {}
     _trajectory = collections.deque()
-    _trajectory_points = 80
+    _trajectory_points = 60
     _trajectory_resolution = 10
-    show_trajectory = False
+    show_trajectory = BooleanProperty(False)
 
     def add_vector(self, name, title, length, angle=0.0, color=(1, 1, 1, 1), mode='object'):
-        self._vectors[name] = Vector(title, length, angle, color, mode)
-        vector_label = Label(text=title)
-        self._vector_labels[name] = vector_label
-        self.add_widget(vector_label)
+        self._vectors[name] = VectorWidget(title=title, length=length, angle=angle, color=color, mode=mode)
+        self.add_widget(self._vectors[name])
 
     def update(self, dt):
         if len(self._trajectory) == 0:
@@ -49,62 +58,32 @@ class PhysicsObject(Widget):
             if len(self._trajectory) > self._trajectory_points:
                 self._trajectory.pop()
 
-    def update_vector(self, name, length, angle):
+    def after_update(self, dt):
+        max_size = max(self.width, self.height) / 2
+        if self.constraint_x:
+            if self.x < self.constraints[0] + max_size:
+                self.x = self.constraints[0] + max_size
+            if self.x > self.constraints[1] - max_size:
+                self.x = self.constraints[1] - max_size
+        if self.constraint_y:
+            if self.y < self.constraints[2] + max_size:
+                self.y = self.constraints[2] + max_size
+            if self.y > self.constraints[3] - max_size:
+                self.y = self.constraints[3] - max_size
+
+    def update_vector(self, name, length, angle=None):
         vector = self._vectors[name]
         vector.name = name
         vector.length = length
-        vector.angle = angle
-        self._vectors[name] = vector
+        if angle is not None:
+            vector.angle = angle
 
-    def draw(self, canvas):
-        with canvas:
-            if self.show_trajectory:
-                Color(1, 1, 1, 0.6)
-                Line(points=[self.x, self.y] + [x for t in self._trajectory for x in t], width=2)
-            Translate(self.x, self.y)
-            Rotate(-self.angle, 0, 0, 1)
-            Color(self.color[0], self.color[1], self.color[2], self.color[3])
-            Rectangle(size=self.size, pos=(-self.width / 2, -self.height / 2), source=self.source)
-            Rotate(self.angle, 0, 0, 1)
-            self.draw_vectors(canvas)
-            Translate(-self.x, -self.y)
+    def on_pos(self, *largs):
+        for vector in self._vectors.itervalues():
+            vector.pos = self.pos
 
     def clear_trajectory(self):
         self._trajectory.clear()
 
     def init(self, *largs):
-        self.update(0)
         self.clear_trajectory()
-
-    def draw_vectors(self, canvas):
-        arrow_size = 4
-        scale = 8.5
-        for vector_name, vector in self._vectors.iteritems():
-            Rotate(-vector.angle, 0, 0, 1)
-            Color(vector.color[0], vector.color[1], vector.color[2], vector.color[3])
-            points = [0, 0,
-                      0, vector.length * scale,
-                      -arrow_size, vector.length * scale - arrow_size * math.copysign(1, vector.length),
-                      arrow_size, vector.length * scale - arrow_size * math.copysign(1, vector.length),
-                      0, vector.length * scale,
-                      0, 0]
-            Line(points=points, width=1.5)
-
-            Translate(0, vector.length / 2 * scale)
-
-            Rotate(vector.angle, 0, 0, 1)
-
-            Color(0, 0, 0, 0.5)
-            Rectangle(size=(
-            self._vector_labels[vector_name].texture_size[0] + 2, self._vector_labels[vector_name].texture_size[1] + 2),
-                      pos=(-1, -1))
-
-            Color(1, 1, 1, 1)
-            Rectangle(texture=self._vector_labels[vector_name].texture,
-                      size=self._vector_labels[vector_name].texture_size,
-                      pos=(0, 0))
-
-            Rotate(-vector.angle, 0, 0, 1)
-            Translate(0, -vector.length / 2 * scale)
-
-            Rotate(vector.angle, 0, 0, 1)

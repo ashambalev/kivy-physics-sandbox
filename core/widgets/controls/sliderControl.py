@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ListProperty, NumericProperty, ObjectProperty
-from kivy.uix.widget import Widget
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from core.widgets.controls.baseControl import BaseControl
 
 __author__ = 'gipzo'
@@ -45,9 +44,10 @@ Builder.load_string('''
             Label:
                 size_hint: None, 0.8
                 width: '100sp'
+                font_name: 'data/DejaVuSansCondensed.ttf'
                 valign: 'top'
-                font_size: '18sp'
-                text:  "{:.2f} ".format(root.value)+root.dim
+                font_size: '16sp'
+                text:  root.format.format(root.value)+root.dim
         Slider:
             id: slider
             size_hint: 1.0, None
@@ -61,13 +61,13 @@ Builder.load_string('''
 
 
 class SliderControl(BaseControl):
-    label = StringProperty('Test')
-    description = StringProperty('Description')
+    label = StringProperty('')
+    description = StringProperty('')
     value = NumericProperty(50)
     min = NumericProperty(0)
     max = NumericProperty(100)
     dim = StringProperty(' m')
-
+    format = StringProperty("{:.2f} ")
     slider = ObjectProperty()
 
     def __init__(self, **kwargs):

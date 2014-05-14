@@ -4,6 +4,7 @@ import json
 import os
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty, NumericProperty
@@ -20,8 +21,8 @@ Builder.load_string('''
 
 <ExperimentLayout>:
     container: container
+    play_button: play_button
     controls: controls
-    time_slider:time_slider
     tabs_area: tabs_area
     BoxLayout:
         orientation: 'vertical'
@@ -46,7 +47,7 @@ Builder.load_string('''
         size_hint: None, None
         width: sp(312)
         background_color: 1,1,1,0
-        tab_height:30
+        tab_height: '50sp'
         height: root.tabs_area.height
         pos: root.tabs_area.pos[0], root.tabs_area.pos[1]
         do_default_tab: False
@@ -58,22 +59,22 @@ Builder.load_string('''
                 padding: '12sp'
                 RstDocument:
                     document_root: root.experiment_path
-                    source: root.description_rst
+                    text: root.description_rst
+
         TabbedPanelItem:
             text: 'Controls'
             background_color: 1,1,1,1
             background_normal: 'data/tab_bg.png'
             background_down: 'data/tab_bg_down.png'
             border: 14,14,14,14
-            ScrollView:
-                GridLayout:
-                    size_hint: 1.0, None
-                    height: self.minimum_height
-                    cols: 1
-                    id: controls
-                    spacing: '12sp'
-                    padding: '12sp'
-
+           # ScrollView:
+            GridLayout:
+                size_hint: 1.0, None
+                height: self.minimum_height
+                cols: 1
+                id: controls
+                spacing: '12sp'
+                padding: '12sp'
 
     BoxLayout:
         size_hint: 1, None
@@ -83,8 +84,8 @@ Builder.load_string('''
         spacing:8
         orientation: 'horizontal'
 
-
         ToggleButton:
+            id: play_button
             size_hint: None, 1
             size: '64sp', '64sp'
             border: 3,3,3,3
@@ -101,6 +102,21 @@ Builder.load_string('''
             text: ''
             on_state: root.reset()
 
+        Spinner:
+            size_hint: None, 1.0
+            size: '64sp', '64sp'
+            text: '1x'
+            disabled: False if root.experiment is not None and root.experiment.can_change_speed == True else True
+            opacity: 0.2 if self.disabled else 1.0
+            border: 22, 22, 22, 22
+            background_down: 'data/spinner_down.png'
+            background_normal: 'data/spinner_normal.png'
+            background_disabled_normal: 'data/spinner_normal.png'
+            background_disabled_normal: 'data/spinner_normal.png'
+            values: '1x', '2x', '5x'
+            option_cls: 'SpeedButton'
+            on_text: root.change_speed(self.text)
+
         Label:
             size_hint: None, 1
             size: '64sp', '64sp'
@@ -110,22 +126,7 @@ Builder.load_string('''
             halign: 'center'
             valign: 'middle'
 
-        Slider:
-            id: time_slider
-            padding: '24sp'
-            opacity: 1.0 if root.experiment and root.experiment.use_timeline else 0.0
-            on_value: root.change_time(self.value)
 
-        Spinner:
-            size_hint: None, 1.0
-            size: '64sp', '64sp'
-            text: '1x'
-            border: 22, 22, 22, 22
-            background_down: 'data/spinner_down.png'
-            background_normal: 'data/spinner_normal.png'
-            values: '1x', '2x', '5x'
-            option_cls: 'SpeedButton'
-            on_text: root.change_speed(self.text)
 
 ''')
 
@@ -156,15 +157,15 @@ class ExperimentLayout(Screen):
     experiment_name = ''
     controls = ObjectProperty()
     container = ObjectProperty()
+    play_button = ObjectProperty()
     tabs_area = ObjectProperty()
-    time_slider = ObjectProperty()
     show_timeline = BooleanProperty(True)
     tabs_pos = NumericProperty(1.0)
     tabs_target = 1.0
     timeline_pos = NumericProperty(1.0)
     timeline_target = 1.0
     time = NumericProperty(0.0)
-    max_time = NumericProperty(30.0)
+    max_time = NumericProperty(999.0)
     time_speed = NumericProperty(1.0)
     experiment = ObjectProperty(allownone=True)
     experiment_info = None
@@ -172,20 +173,29 @@ class ExperimentLayout(Screen):
     def __init__(self, **kwargs):
         super(ExperimentLayout, self).__init__(**kwargs)
         self.bind(on_leave=self.unload)
+        Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard(self, window, key, scancode, codepoint, modifier):
+        if self.experiment is not None:
+            if key == 32:  # Spacebar
+                self.play_button.state = 'normal' if self.play_button.state == 'down' else 'down'
+            if key == 114:  # R and r
+                self.reset()
 
     def load_experiment(self, category, experiment):
         self.experiment_name = experiment
         self.category = category
         self.experiment_path = os.path.join("experiments/", category, experiment)
-        self.description_rst = os.path.join(self.experiment_path, "description.rst")
+        self.description_rst = open(os.path.join(self.experiment_path, "description.rst"), 'r').read()
         self.experiment_info = json.load(open(os.path.join(self.experiment_path, "experiment.json")))
+
         exp_module = load_module(category, experiment, "experiment")
         self.experiment = exp_module.load_experiment()
+        self.experiment.experiment_path = self.experiment_path
+        self.experiment.load()
         self.experiment.build_controls(self.controls)
         self.container.add_widget(self.experiment)
-        self.time_slider.min = 0
-        self.time_slider.max = self.max_time
-
+        self.experiment.reset()
         self.title = self.experiment_info['title']
         self.description = self.experiment_info['description']
 
@@ -196,9 +206,8 @@ class ExperimentLayout(Screen):
 
     def update_time(self, dt):
         self.time += dt * self.time_speed
-        self.time_slider.value = self.time
         if self.time > self.max_time:
-            self.time = 0
+            self.time = 0.0
         self.experiment.time = self.time
         self.experiment.update(dt * self.time_speed)
 
@@ -211,12 +220,22 @@ class ExperimentLayout(Screen):
 
     def toggle_time(self, state):
         if state == 'down':
+            self.experiment.live = True
             Clock.schedule_interval(self.update_time, 1 / 30.0)
         else:
+            self.experiment.live = False
             Clock.unschedule(self.update_time)
 
     def reset(self, *largs):
+        self.play_button.state = 'normal'
+        self.time = 0.0
         self.experiment.reset()
+
+    def on_enter(self, *args):
+        self.reset()
+
+    def on_pre_leave(self, *args):
+        self.reset()
 
     def toggle_tabs(self, *largs):
         if self.tabs_target == 1.0:
