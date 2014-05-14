@@ -6,7 +6,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from core.categoryScreen import CategoryScreen
 from core.mainScreen import MainScreen
-from core.widgets.experimentLayout import ExperimentLayout
+from core.experimentScreen import ExperimentScreen
 
 Builder.load_string('''
 <MainLayout>:
@@ -95,7 +95,7 @@ class MainLayout(BoxLayout):
         super(MainLayout, self).__init__(**kwargs)
         self.main_screen = MainScreen(mainLayout=self)
         self.category_screen = CategoryScreen(mainLayout=self)
-        self.experiment_layout = ExperimentLayout(mainLayout=self)
+        self.experiment_layout = ExperimentScreen(mainLayout=self)
         self.main_screen.load_categories()
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.add_widget(self.category_screen)

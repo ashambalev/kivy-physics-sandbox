@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-from kivy.metrics import sp
+from kivy.metrics import sp, Metrics
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 
@@ -94,10 +94,12 @@ class CannonExperimentWindow(ExperimentWindow):
                                 bold=True,
                                 halign='center',
                                 valign='middle')
-        self.ground = TexturedWidget(source=self.get_file('data/ground.png'), scale=0.25)
+        self.ground = TexturedWidget(source=self.get_file('data/ground.png'), scale=0.25 * Metrics.density)
 
-        self.cannon_base = Image(source=self.get_file('data/cannon_base.png'), size=(64, 64))
-        self.cannon = PhysicsObject(source=self.get_file('data/cannon.png'), size=(64, 64))
+        self.cannon_base = Image(source=self.get_file('data/cannon_base.png'),
+                                 size=(64 * Metrics.density, 64 * Metrics.density))
+        self.cannon = PhysicsObject(source=self.get_file('data/cannon.png'),
+                                    size=(64 * Metrics.density, 64 * Metrics.density))
 
         self.add_widget(self.ground)
         self.add_widget(self.info_label)
@@ -117,7 +119,7 @@ class CannonExperimentWindow(ExperimentWindow):
         self.update()
 
     def update_ball_params(self):
-        self.ball.constraints = [0, self.width, GROUND_SIZE - 10, self.height]
+        self.ball.constraints = [0, self.width, GROUND_SIZE - sp(10), self.height]
         if not self.live:
             self.ball.ball_speed = self.ball_speed.value
             self.ball.cannon_angle = self.cannon_angle.value
@@ -140,7 +142,7 @@ class CannonExperimentWindow(ExperimentWindow):
                                                                                                   self.ball.time_in_air)
 
     def on_size(self, *largs):
-        self.ball.constraints = [0, self.width, GROUND_SIZE - 10, self.height]
+        self.ball.constraints = [0, self.width, GROUND_SIZE - sp(10), self.height]
         self.ground.pos = self.pos
         self.ground.size = (self.size[0], GROUND_SIZE)
         self.info_label.pos = self.pos

@@ -18,7 +18,7 @@ Builder.load_string('''
     background_down: 'data/button_down.png'
 
 
-<ExperimentLayout>:
+<ExperimentScreen>:
     container: container
     play_button: play_button
     controls: controls
@@ -85,7 +85,7 @@ Builder.load_string('''
 
         ToggleButton:
             id: play_button
-            size_hint: None, 1
+            size_hint: None, None
             size: '64sp', '64sp'
             border: 3,3,3,3
             background_down: 'data/play_down.png'
@@ -146,7 +146,7 @@ def load_module(category, experiment, name):
     return module
 
 
-class ExperimentLayout(Screen):
+class ExperimentScreen(Screen):
     name = StringProperty('experiment')
     title = StringProperty('Experiment')
     description = StringProperty('')
@@ -170,7 +170,7 @@ class ExperimentLayout(Screen):
     experiment_info = None
 
     def __init__(self, **kwargs):
-        super(ExperimentLayout, self).__init__(**kwargs)
+        super(ExperimentScreen, self).__init__(**kwargs)
         self.bind(on_leave=self.unload)
 
     def load_experiment(self, category, experiment):
