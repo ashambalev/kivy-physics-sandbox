@@ -13,3 +13,4 @@ Experiments are dynamically populated from `experiments` folder. Each experiment
           description.rst  # Description in RST format
           experiment.py    # Main experiment file
       
+`experiment.py` file must have `load_experiment` function that returns class, that must be inherited from `ExperimentWindow` class.
