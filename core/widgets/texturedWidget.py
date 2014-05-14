@@ -35,8 +35,8 @@ class TexturedWidget(Widget):
         super(TexturedWidget, self).__init__(**kwargs)
 
     def _calc_tex_coords(self):
-        self.w = self.width / self.texture.width / self.scale if self.texture else 1.0
-        self.h = -self.height / self.texture.height / self.scale if self.texture else 1.0
+        self.w = float(self.width) / self.texture.width / self.scale if self.texture else 1.0
+        self.h = -float(self.height) / self.texture.height / self.scale if self.texture else 1.0
 
     def on_source(self, *largs):
         self.texture = Image.load(self.source).texture

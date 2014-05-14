@@ -4,7 +4,6 @@ import json
 import os
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty, NumericProperty
@@ -173,14 +172,6 @@ class ExperimentLayout(Screen):
     def __init__(self, **kwargs):
         super(ExperimentLayout, self).__init__(**kwargs)
         self.bind(on_leave=self.unload)
-        Window.bind(on_keyboard=self.on_keyboard)
-
-    def on_keyboard(self, window, key, scancode, codepoint, modifier):
-        if self.experiment is not None:
-            if key == 32:  # Spacebar
-                self.play_button.state = 'normal' if self.play_button.state == 'down' else 'down'
-            if key == 114:  # R and r
-                self.reset()
 
     def load_experiment(self, category, experiment):
         self.experiment_name = experiment
@@ -208,12 +199,9 @@ class ExperimentLayout(Screen):
         self.time += dt * self.time_speed
         if self.time > self.max_time:
             self.time = 0.0
-        self.experiment.time = self.time
-        self.experiment.update(dt * self.time_speed)
-
-    def change_time(self, value):
-        self.time = value
-        self.experiment.time = self.time
+        if self.experiment is not None:
+            self.experiment.time = self.time
+            self.experiment.update(dt * self.time_speed)
 
     def change_speed(self, value):
         self.time_speed = float(value.replace('x', ''))
@@ -233,6 +221,12 @@ class ExperimentLayout(Screen):
 
     def on_enter(self, *args):
         self.reset()
+
+    def on_pre_enter(self, *args):
+        self.tabs_target = 1.0
+        self.tabs_pos = 1.0
+        self.timeline_target = 1.0
+        self.timeline_pos = 1.0
 
     def on_pre_leave(self, *args):
         self.reset()

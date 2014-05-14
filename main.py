@@ -35,6 +35,7 @@ Builder.load_string('''
 ''')
 
 class KivyPhysicsSandboxApp(App):
+    use_kivy_settings = False
     def build(self):
         return MainLayout()
 

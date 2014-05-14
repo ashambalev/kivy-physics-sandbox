@@ -64,12 +64,6 @@ class MyExperimentWindow(ExperimentWindow):
 
     def load(self, *largs):
 
-        #self.boat.init()
-        #self.boat.add_vector('boat_speed', 'Vb', self.boat_speed.value, self.boat_angle.value, (1, 0.4, 1, 1))
-        #self.boat.add_vector('river_speed', 'Vr', self.river_speed.value, 90.0, (0.4, 1, 1, 1))
-        #self.boat.add_vector('speed', 'V', self.boat_speed.value, self.boat_angle.value)
-        #self.boat.show_trajectory = self.show_trajectory.value
-
         self.stars = TexturedWidget(source=self.get_file('data/stars.png'),
                                     color=[1, 1, 1, 1])
         self.earth = PhysicsObject(source=self.get_file('data/earth.png'),

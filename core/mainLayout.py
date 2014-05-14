@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from kivy.core.window import Window
+from kivy.base import stopTouchApp
+from kivy.core.window import Window, Keyboard
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -9,6 +10,8 @@ from core.widgets.experimentLayout import ExperimentLayout
 
 Builder.load_string('''
 <MainLayout>:
+    tabs_button: tabs_button
+    timeline_button: timeline_button
     orientation: 'vertical'
     screen_manager: screen_manager
     canvas:
@@ -51,22 +54,26 @@ Builder.load_string('''
                 size: sp(64-16), sp(64-16)
                 on_press: root.go_main()
             ToggleButton:
+                id: timeline_button
                 text: ''
                 border: 3,3,3,3
                 background_down: 'data/timeline_down.png'
                 background_normal: 'data/timeline_normal.png'
                 background_disabled_normal: 'data/timeline_disabled.png'
+                background_disabled_down: 'data/timeline_disabled.png'
                 disabled: root.screen_manager.current is not 'experiment'
                 size_hint: None, None
                 size: sp(64-16), sp(64-16)
                 on_press: root.toggle_timeline()
 
             ToggleButton:
+                id: tabs_button
                 text: ''
                 border: 3,3,3,3
                 background_down: 'data/tabs_down.png'
                 background_normal: 'data/tabs_normal.png'
                 background_disabled_normal: 'data/tabs_disabled.png'
+                background_disabled_down: 'data/tabs_disabled.png'
                 size_hint: None, None
                 disabled: root.screen_manager.current is not 'experiment'
                 size: sp(64-16), sp(64-16)
@@ -81,6 +88,8 @@ class MainLayout(BoxLayout):
     title = StringProperty()
     subtitle = StringProperty()
     screen_manager = ObjectProperty()
+    tabs_button = ObjectProperty()
+    timeline_button = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(MainLayout, self).__init__(**kwargs)
@@ -95,11 +104,25 @@ class MainLayout(BoxLayout):
         Window.bind(on_keyboard=self.on_keyboard)
 
     def on_keyboard(self, window, key, scancode, codepoint, modifier):
-        if key == 8:  # Backspace
-            self.go_main()
+        if key in (8, 27) or key == Keyboard.keycodes['escape']:  # Backspace or escape
+            if self.screen_manager.current == 'main':
+                stopTouchApp()
+            else:
+                self.go_main()
+
+        if self.experiment_layout.experiment is not None:
+            if key == 32:  # Spacebar
+                self.experiment_layout.play_button.state = 'normal' if self.experiment_layout.play_button.state == 'down' else 'down'
+            if key == 114:  # R
+                self.experiment_layout.reset()
+            if key in (282, 319):
+                self.experiment_layout.toggle_tabs()
+        return True
 
     def go_main(self, *largs):
         self.screen_manager.current = 'main'
+        self.timeline_button.state = 'normal'
+        self.tabs_button.state = 'normal'
 
     def toggle_tabs(self, *largs):
         self.experiment_layout.toggle_tabs()
