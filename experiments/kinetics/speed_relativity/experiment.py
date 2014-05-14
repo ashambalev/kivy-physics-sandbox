@@ -49,8 +49,8 @@ class MyExperimentWindow(ExperimentWindow):
                                description="Control your boat",
                                min=-180.0, max=180.0, value=0.0, dim=u' \u00b0')
     show_trajectory = CheckControl(label="Show boat trajectory",
-                               description="",
-                               value=True, )
+                                   description="",
+                                   value=True, )
 
     boat = ObjectProperty()
     riversize_size = NumericProperty(RIVERSIDE_SIZE)

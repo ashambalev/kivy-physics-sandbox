@@ -17,7 +17,7 @@ Builder.load_string('''
         StackLayout:
             id: grid
             padding: '32sp'
-            spacing: '16sp'
+            spacing: '32sp'
             size_hint_y: None
             height: self.minimum_height
 

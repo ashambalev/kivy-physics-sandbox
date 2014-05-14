@@ -6,7 +6,6 @@ from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 
 __author__ = 'gipzo'
@@ -38,6 +37,16 @@ Builder.load_string('''
             size: root.size
 
         StencilPop
+
+        Color:
+            rgba: 0, 0, 0, 0.5
+        BorderImage:
+            source: 'data/shadow.png'
+            border: 16, 16, 16, 16
+            pos: root.pos[0]-16, root.pos[1]-16
+            size: root.size[0]+32, root.size[1]+32
+
+
         Color:
             rgba: 0, 0, 0, 0.7 if root.state == 'normal' else 0.2
         Rectangle:
@@ -46,6 +55,8 @@ Builder.load_string('''
 
     Label:
         text: root.title
+        font_size: '16sp'
+        bold: True
         pos: root.pos[0]+root.text_padding, root.pos[1]+root.text_padding
         size: root.size[0]-2*root.text_padding, root.text_height-root.text_padding
         text_size: self.size
