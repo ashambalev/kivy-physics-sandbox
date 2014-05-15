@@ -5,7 +5,27 @@ Kivy Physics Sandbox is educational application for visualizing different physic
 
 The main feature of this application is interactivity and ability to quickly develop new experiments using application' provided classes.
 
-Works on Ubuntu, OS X, Android tablet and Android phone (but difficult to use). Should work on Windows too.
+Works on Windows, Ubuntu, OS X, Android tablet and Android phone (but difficult to use).
+
+Installation
+============
+
+#### Linux, OS X
+
+```bash
+git clone https://github.com/Gipzo/kivy-physics-sandbox.git
+pip install -r requirements.txt
+```
+
+Run application by executing `python main.py`
+
+#### Windows
+
+[Win32 Release](https://github.com/Gipzo/kivy-physics-sandbox/releases/download/0.1/KivyPhysicsSandbox-win32.tar.gz)
+
+#### Android
+
+[Android APK](https://github.com/Gipzo/kivy-physics-sandbox/releases/download/0.1/KivyPhysicsSandbox-android-debug.apk)
 
 Screenshots
 ===========
