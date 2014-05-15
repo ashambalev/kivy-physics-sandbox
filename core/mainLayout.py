@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from kivy import platform
 from kivy.base import stopTouchApp
 from kivy.core.window import Window, Keyboard
 from kivy.lang import Builder
@@ -101,7 +102,21 @@ class MainLayout(BoxLayout):
         self.screen_manager.add_widget(self.category_screen)
         self.screen_manager.add_widget(self.experiment_layout)
         self.screen_manager.current = 'main'
+        if platform == 'android':
+            Window.bind(on_keyboard=self.on_keyboard_android)
         Window.bind(on_keyboard=self.on_keyboard)
+
+    def on_keyboard_android(self, window, key, scancode, codepoint, modifier):
+        if key in (8, 27) or key == Keyboard.keycodes['escape']:  # Backspace or escape
+            if self.screen_manager.current == 'main':
+                stopTouchApp()
+            else:
+                self.go_main()
+        if self.experiment_layout.experiment is not None:
+            if key in (282, 319):
+                self.experiment_layout.toggle_tabs()
+        return True
+
 
     def on_keyboard(self, window, key, scancode, codepoint, modifier):
         if key in (8, 27) or key == Keyboard.keycodes['escape']:  # Backspace or escape
@@ -109,7 +124,6 @@ class MainLayout(BoxLayout):
                 stopTouchApp()
             else:
                 self.go_main()
-
         if self.experiment_layout.experiment is not None:
             if key == 32:  # Spacebar
                 self.experiment_layout.play_button.state = 'normal' if self.experiment_layout.play_button.state == 'down' else 'down'

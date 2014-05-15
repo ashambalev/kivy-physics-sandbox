@@ -1,20 +1,19 @@
 #!/usr/bin/kivy
 import kivy
 from kivy.lang import Builder
-from kivy.uix.button import Button
 from kivy.uix.slider import Slider
 from core.mainLayout import MainLayout
 
 kivy.require('1.4.2')
 import os
-from kivy.app import App
 from kivy.config import Config
 
-CATALOG_ROOT = os.path.dirname(__file__)
+Config.set('graphics', 'width', '800')
+Config.set('graphics', 'fullscreen', '0')
+Config.set('graphics', 'height', '600')
+from kivy.app import App
 
-#Config.set('graphics', 'width', '800')
-#Config.set('graphics', 'fullscreen', '0')
-#Config.set('graphics', 'height', '600')
+CATALOG_ROOT = os.path.dirname(__file__)
 Builder.unbind_widget(Slider.uid)
 Builder.load_string('''
 <Slider>:
@@ -34,8 +33,12 @@ Builder.load_string('''
 
 ''')
 
+
 class KivyPhysicsSandboxApp(App):
     use_kivy_settings = False
+    title = 'Kivy Physics Sandbox'
+    icon = 'data/icon.png'
+
     def build(self):
         return MainLayout()
 
