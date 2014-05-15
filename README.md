@@ -5,14 +5,43 @@ Kivy Physics Sandbox is educational application for visualizing different physic
 
 The main feature of this application is interactivity and ability to quickly develop new experiments using application' provided classes.
 
-Works on OS X, Android tablet and Android phone (but difficult to use). Should work on Linux and Windows (with kivy libs).
+Works on Ubuntu, OS X, Android tablet and Android phone (but difficult to use). Should work on Windows too.
+
+Screenshots
+===========
+
+![main_screen](docs/screenshots/main_screen.png "Main screen")
+
+![screen_2](docs/screenshots/screen_2.png "Cannon experiment")
+
+![screen_2](docs/screenshots/screen_3.png "Moon experiment")
+
+
+Keyboard control (for PC)
+=========================
+![screen_keys](docs/screenshots/screen_keys.png "Keyboard control")
+
+Experiments
+===========
+
+Currently there are 4 experiments in 2 categories:
+
+    Kinetics
+        Cannon
+        Moon movement
+        Speed relativity
+    Optics
+        Refraction
 
 Experiments are dynamically populated from `experiments` folder. Each experiment must have this folder structure:
 
     experiments/
+      __init__.py
       <category>/
+        __init__.py
         category.json  # Category information: title and icon file
         <experiment_name>
+          __init__.py
           experiment.json  # Experiment information: title, short description and icon file
           description.rst  # Description in RST format
           experiment.py    # Main experiment file
