@@ -25,14 +25,14 @@ class Moon(PhysicsObject):
 
         earth_vector = (self.x - self.earth_pos[0], self.y - self.earth_pos[1])
         r2 = math.pow(earth_vector[0], 2) + math.pow(earth_vector[1], 2)
-        G = 6.67545 * 150
+        G = 6.67545 * 5000
         r = math.sqrt(r2)
         earth_vector = (earth_vector[0] / r, earth_vector[1] / r)
         Vg = -G * self.earth_mass / r2
         Vg_x = earth_vector[0] * Vg
         Vg_y = earth_vector[1] * Vg
-        self.total_speed_x += Vg_x
-        self.total_speed_y += Vg_y
+        self.total_speed_x += Vg_x*dt
+        self.total_speed_y += Vg_y*dt
         self.total_speed = math.sqrt(self.total_speed_x * self.total_speed_x + self.total_speed_y * self.total_speed_y)
 
         self.update_vector('moon_speed', self.total_speed,
