@@ -37,8 +37,10 @@ class CannonBall(PhysicsObject):
         self.update_vector('ball_speed', self.ball_speed / 20.0, self.cannon_angle)
         self.update_vector('wind_speed', self.wind_speed)
         self.update_vector('gravity', self.gravity * self.mass)
-        total_speed_x = self.ball_speed * math.sin(self.cannon_angle * math.pi / 180.0) + self.wind_speed
-        total_speed_y = self.ball_speed * math.cos(self.cannon_angle * math.pi / 180.0) - self.gravity * self.mass
+        total_speed_x = self.ball_speed * math.sin(self.cannon_angle * math.pi / 180.0)
+        total_speed_x += self.wind_speed
+        total_speed_y = self.ball_speed * math.cos(self.cannon_angle * math.pi / 180.0)
+        total_speed_y -= self.gravity * self.mass
 
         total_speed_angle = math.atan2(total_speed_x, total_speed_y) * 180.0 / math.pi
         total_speed_length = math.sqrt(total_speed_x * total_speed_x + total_speed_y * total_speed_y)
@@ -87,14 +89,27 @@ class CannonExperimentWindow(ExperimentWindow):
                                show_trajectory=True,
                                constraint_x=False,
                                pos=BALL_INIT_POS)
-        self.ball.add_vector('ball_speed', 'Vb', self.ball_speed.value, self.cannon_angle.value, (1, 0.4, 1, 1))
-        self.ball.add_vector('wind_speed', 'Vw', self.wind_speed.value, 90.0, (0.4, 1, 1, 1))
-        self.ball.add_vector('gravity', 'g', self.gravity.value, 180)
+
+        self.ball.add_vector('ball_speed', 'Vb',
+                             self.ball_speed.value,
+                             self.cannon_angle.value,
+                             (1, 0.4, 1, 1))
+
+        self.ball.add_vector('wind_speed', 'Vw',
+                             self.wind_speed.value,
+                             90.0,
+                             (0.4, 1, 1, 1))
+
+        self.ball.add_vector('gravity', 'g',
+                             self.gravity.value,
+                             180)
+
         self.info_label = Label(text='Length: 0.0 m  Height: 0.0 m  Time in air: 0.0 s',
                                 font_size=sp(16),
                                 bold=True,
                                 halign='center',
                                 valign='middle')
+
         self.ground = TexturedWidget(source=self.get_file('data/ground.png'), scale=0.25 * Metrics.density)
 
         self.cannon_base = Image(source=self.get_file('data/cannon_base.png'),
@@ -112,7 +127,7 @@ class CannonExperimentWindow(ExperimentWindow):
     def update_angle(self, widget, touch):
         touch_x, touch_y = touch.x, touch.y
         angle = math.atan2(touch_y - self.cannon.y, touch_x - self.cannon.y)
-        angle = 90-angle * 180 / math.pi
+        angle = 90 - angle * 180 / math.pi
         angle = boundary(angle, -85.0, 85.0)
         self.cannon_angle.value = angle
         self.update()
@@ -147,9 +162,12 @@ class CannonExperimentWindow(ExperimentWindow):
         self.ball.update(dt)
         self.ball.after_update(dt)
 
-        self.info_label.text = "Length: {:.2f} m  Height: {:.2f} m  Time in air: {:.2f} s".format(self.ball.max_length,
-                                                                                                  self.ball.max_height,
-                                                                                                  self.ball.time_in_air)
+        self.info_label.text = \
+            "Length: {:.2f} m \
+            Height: {:.2f} m \
+            Time in air: {:.2f} s".format(self.ball.max_length,
+                                          self.ball.max_height,
+                                          self.ball.time_in_air)
 
     def on_size(self, *largs):
         self.ball.constraints = [0, self.width, GROUND_SIZE - sp(10), self.height]
@@ -165,4 +183,3 @@ class CannonExperimentWindow(ExperimentWindow):
 def load_experiment():
     main_widget = CannonExperimentWindow()
     return main_widget
-

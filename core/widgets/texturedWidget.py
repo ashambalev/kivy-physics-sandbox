@@ -29,5 +29,3 @@ class TexturedWidget(Widget):
 
     def on_size(self, *largs):
         self._calc_tex_coords()
-
-    pass
