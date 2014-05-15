@@ -19,14 +19,15 @@ class SpeedButton(SpinnerOption):
 Factory.register('SpeedButton', cls=SpeedButton)
 
 
-def load_module(category, experiment, name):
-    tmp = imp.find_module(name, ["experiments/{}/{}/".format(category, experiment)])
-    try:
-        module = imp.load_module(name, tmp[0], "path", tmp[2])
-    finally:
-        tmp[0].close()
-    return module
-
+def load_experiment(category, experiment):
+    name = "experiments.{}.{}.experiment".format(category, experiment)
+    print name
+    mod = __import__(name,
+                     globals=globals(),
+                     locals=locals(),
+                     fromlist=['experiment'], level=0)
+    f = getattr(mod, 'load_experiment')
+    return f()
 
 class ExperimentScreen(Screen):
     name = StringProperty('experiment')
@@ -61,9 +62,7 @@ class ExperimentScreen(Screen):
         self.experiment_path = os.path.join("experiments/", category, experiment)
         self.description_rst = open(os.path.join(self.experiment_path, "description.rst"), 'r').read()
         self.experiment_info = json.load(open(os.path.join(self.experiment_path, "experiment.json")))
-
-        exp_module = load_module(category, experiment, "experiment")
-        self.experiment = exp_module.load_experiment()
+        self.experiment = load_experiment(category, experiment)
         self.experiment.experiment_path = self.experiment_path
         self.experiment.load()
         self.experiment.build_controls(self.controls)
