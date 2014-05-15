@@ -2,16 +2,13 @@
 Moon movement
 ==================
 
+Description
+--------------
 
-1) An enumerated list item
+Moon is the only natural satellite of our planet. It's orbital period is approximately 29 days. We can only see the face of the moon from the Earth.
 
-2) Second item
+But what would happen if we could change the mass of the Moon, or it's distance from Earth. Let's find out.
 
-   a) Sub item that goes on at length and thus needs
-      to be wrapped. Note the indentation that must
-      match the beginning of the text, not the
-      enumerator.
+You can only change masses of the Moon and Earth while playing.
 
-      i) Sub-sub item
-
-3) Third item
+You can reset the system by pressing second button on the bottom panel.

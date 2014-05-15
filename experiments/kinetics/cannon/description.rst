@@ -2,18 +2,14 @@
 Cannon experiment
 ==================
 
-Header
+Description
 ---------
 
-1) An enumerated list item
+This experiment shows common class of problems in physics.
 
-2) Second item
+There are two forces, that apply to the cannonball: Gravity and Wind force.
+Without Wind force the ball is moving along X-axis with constant speed, but when we apply
+the force from wind, we have to solve much more complex problem with aiming.
 
-   a) Sub item that goes on at length and thus needs
-      to be wrapped. Note the indentation that must
-      match the beginning of the text, not the
-      enumerator.
-
-      i) Sub-sub item
-
-3) Third item
+You can only change start velocity at start.
+Try to change some parameters and get longest air time. Reset the system to try again.

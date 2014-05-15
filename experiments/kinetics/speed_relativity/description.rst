@@ -2,16 +2,13 @@
 Speed relativity
 ==================
 
+Description
+-------------
 
-1) An enumerated list item
+This experiment show how our vision of speed changes from different perspectives:
+from the boat point of view it is moving perfectly straight to the other riverside,
+but from the riverside we can see that boat is slowly drifting along the river.
 
-2) Second item
+You can press play and change all the parameters along.
 
-   a) Sub item that goes on at length and thus needs
-      to be wrapped. Note the indentation that must
-      match the beginning of the text, not the
-      enumerator.
-
-      i) Sub-sub item
-
-3) Third item
+Press second button on the bottom panel to reset the system.
