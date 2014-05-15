@@ -18,7 +18,7 @@ class PhysicsObject(Widget):
     _vectors = {}
     _trajectory = collections.deque()
     _trajectory_points = 60
-    _trajectory_resolution = 10
+    _trajectory_resolution = 0.05
     show_trajectory = BooleanProperty(False)
 
     def add_vector(self, name, title, length, angle=0.0, color=(1, 1, 1, 1), mode='object'):
@@ -28,8 +28,13 @@ class PhysicsObject(Widget):
     def update(self, dt):
         if len(self._trajectory) == 0:
             self._trajectory.appendleft((self.pos[0], self.pos[1]))
-        if math.fabs(self._trajectory[0][0] - self.pos[0]) + \
-                math.fabs(self._trajectory[0][1] - self.pos[1]) > self._trajectory_resolution:
+        angle0 = math.atan2(self._trajectory[0][1] - self.pos[1], self._trajectory[0][0] - self.pos[0])
+        if len(self._trajectory) > 1:
+            angle1 = math.atan2(self._trajectory[1][1] - self._trajectory[0][1],
+                                self._trajectory[1][0] - self._trajectory[0][0])
+        else:
+            angle1 = 0
+        if math.fabs(angle0 - angle1) > self._trajectory_resolution:
             self._trajectory.appendleft((self.pos[0], self.pos[1]))
             if len(self._trajectory) > self._trajectory_points:
                 self._trajectory.pop()
