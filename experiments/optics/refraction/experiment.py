@@ -71,14 +71,14 @@ class RefractionExperimentWindow(ExperimentWindow):
         l = math.sqrt(GLASS_WIDTH * GLASS_WIDTH + math.pow(GLASS_WIDTH / math.tan(math.atan2(cosy, siny)), 2))
         self.line_glass.end = (self.line_glass.start[0] + l * cosy, self.line_glass.start[1] + l * siny)
 
-        sina = math.fabs(self.line_glass.start_y - self.line_glass.end_y) / l
-        if self.in_angle.value < 0.0:
-            sina *= -1
+        #sina = math.fabs(self.line_glass.start_y - self.line_glass.end_y) / l
+        #if self.in_angle.value < 0.0:
+        #    sina *= -1
         siny = sina / self.refractive_index.value
-        cosy = math.sqrt(1 - siny * siny)
+        cosy = math.sqrt(1 - sina * sina)
         l = self.size[0]
         self.line_out.start = self.line_glass.end
-        self.line_out.end = (self.line_out.start[0] + l * cosy, self.line_out.start[1] + l * siny)
+        self.line_out.end = (self.line_out.start[0] + l * cosy, self.line_out.start[1] + l * sina)
 
 
     def on_size(self, *largs):
