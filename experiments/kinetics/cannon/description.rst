@@ -1,9 +1,9 @@
-==================
+=================
 Cannon experiment
-==================
+=================
 
 Description
----------
+-----------
 
 This experiment shows common class of problems in physics.
 

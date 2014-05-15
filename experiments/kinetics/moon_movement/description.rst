@@ -1,9 +1,9 @@
-==================
+=============
 Moon movement
-==================
+=============
 
 Description
---------------
+-----------
 
 Moon is the only natural satellite of our planet. It's orbital period is approximately 29 days. We can only see the face of the moon from the Earth.
 

@@ -21,7 +21,6 @@ Factory.register('SpeedButton', cls=SpeedButton)
 
 def load_experiment(category, experiment):
     name = "experiments.{}.{}.experiment".format(category, experiment)
-    print name
     mod = __import__(name,
                      globals=globals(),
                      locals=locals(),

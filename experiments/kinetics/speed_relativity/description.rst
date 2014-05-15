@@ -1,9 +1,9 @@
-==================
+================
 Speed relativity
-==================
+================
 
 Description
--------------
+-----------
 
 This experiment show how our vision of speed changes from different perspectives:
 from the boat point of view it is moving perfectly straight to the other riverside,
