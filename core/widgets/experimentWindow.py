@@ -16,6 +16,9 @@ class ExperimentWindow(Widget):
 
         self.scale = Metrics.density
 
+    def load(self, *largs):
+        pass
+
     def reset(self, *largs):
         pass
 
