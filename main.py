@@ -10,7 +10,6 @@ CATALOG_ROOT = os.path.dirname(__file__)
 
 
 class KivyPhysicsSandboxApp(App):
-    use_kivy_settings = False
     title = 'Kivy Physics Sandbox'
     icon = 'data/icon.png'
     kv_file = 'data/app.kv'

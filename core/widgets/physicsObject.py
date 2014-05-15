@@ -17,7 +17,7 @@ class PhysicsObject(Widget):
     constraint_y = BooleanProperty(True)
     _vectors = {}
     _trajectory = collections.deque()
-    _trajectory_points = 60
+    _trajectory_points = 100
     _trajectory_resolution = 0.05
     show_trajectory = BooleanProperty(False)
 
