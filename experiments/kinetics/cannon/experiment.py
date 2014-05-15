@@ -33,7 +33,7 @@ class CannonBall(PhysicsObject):
 
     def update(self, dt):
         super(CannonBall, self).update(dt)
-        self.update_vector('ball_speed', self.ball_speed / 10.0, self.cannon_angle)
+        self.update_vector('ball_speed', self.ball_speed / 20.0, self.cannon_angle)
         self.update_vector('wind_speed', self.wind_speed)
         self.update_vector('gravity', self.gravity * self.mass)
         total_speed_x = self.ball_speed * math.sin(self.cannon_angle * math.pi / 180.0) + self.wind_speed

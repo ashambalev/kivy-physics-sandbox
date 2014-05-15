@@ -35,7 +35,7 @@ class Moon(PhysicsObject):
         self.total_speed_y += Vg_y*dt
         self.total_speed = math.sqrt(self.total_speed_x * self.total_speed_x + self.total_speed_y * self.total_speed_y)
 
-        self.update_vector('moon_speed', self.total_speed,
+        self.update_vector('moon_speed', self.total_speed/4.0,
                            90 - math.atan2(self.total_speed_y, self.total_speed_x) * 180.0 / math.pi)
         self.update_vector('gravity', self.mass * self.earth_mass / 10.0 + 2.0,
                            90 - math.atan2(Vg_y, Vg_x) * 180.0 / math.pi)
@@ -72,7 +72,7 @@ class MoonMovementExperimentWindow(ExperimentWindow):
                          size=(64, 64), scale=0.5,
                          show_trajectory=True)
 
-        self.moon.add_vector('moon_speed', 'V', self.start_speed.value / 400 + 2, 90, (1, 1, 1, 1))
+        self.moon.add_vector('moon_speed', 'V', self.start_speed.value / 200 + 2, 90, (1, 1, 1, 1))
         self.moon.add_vector('gravity', 'g', self.moon_mass.value, 180, (1, 1, 1, 1))
 
         self.info_label = Label(text='Moon speed: 0.0 m/s', font_size=sp(16), bold=True, halign='center',
