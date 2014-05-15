@@ -49,7 +49,7 @@ class MainLayout(BoxLayout):
             else:
                 self.go_main()
         if self.experiment_layout.experiment is not None:
-            if key == 32:  # Spacebar
+            if key == Keyboard.keycodes['p']:  # P
                 self.experiment_layout.play_button.state = 'normal' if self.experiment_layout.play_button.state == 'down' else 'down'
             if key == 114:  # R
                 self.experiment_layout.reset()
