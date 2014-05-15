@@ -1,3 +1,4 @@
+import os
 from kivy.core.image import Image
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.uix.widget import Widget
@@ -21,9 +22,10 @@ class TexturedWidget(Widget):
         self.h = -float(self.height) / self.texture.height / self.scale if self.texture else 1.0
 
     def on_source(self, *largs):
-        self.texture = Image.load(self.source).texture
-        self.texture.wrap = 'repeat'
-        self._calc_tex_coords()
+        if os.path.exists(self.source):
+            self.texture = Image.load(self.source).texture
+            self.texture.wrap = 'repeat'
+            self._calc_tex_coords()
 
     def on_size(self, *largs):
         self._calc_tex_coords()

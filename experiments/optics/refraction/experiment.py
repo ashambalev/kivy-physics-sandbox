@@ -13,7 +13,7 @@ from core.widgets.texturedWidget import TexturedWidget
 GLASS_WIDTH = 128
 
 
-class MyExperimentWindow(ExperimentWindow):
+class RefractionExperimentWindow(ExperimentWindow):
     in_angle = SliderControl(label="Input angle",
                              description="Angle of the input ray",
                              min=-85.0, max=85.0, value=0.0, dim=u' \u00b0')
@@ -95,7 +95,7 @@ class MyExperimentWindow(ExperimentWindow):
 
 
 def load_experiment():
-    main_widget = MyExperimentWindow()
+    main_widget = RefractionExperimentWindow()
     return main_widget
 
 

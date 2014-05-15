@@ -43,7 +43,7 @@ class Moon(PhysicsObject):
         self.y += self.total_speed_y * dt
 
 
-class MyExperimentWindow(ExperimentWindow):
+class MoonMovementExperimentWindow(ExperimentWindow):
     moon_distance = SliderControl(label="Moon orbit",
                                   description="Distance from Earth",
                                   min=100, max=500, value=384.0, dim=',000 km', format='{:.0f}')
@@ -119,7 +119,7 @@ class MyExperimentWindow(ExperimentWindow):
 
 
 def load_experiment():
-    main_widget = MyExperimentWindow()
+    main_widget = MoonMovementExperimentWindow()
     return main_widget
 
 

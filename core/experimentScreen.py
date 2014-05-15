@@ -73,6 +73,7 @@ class ExperimentScreen(Screen):
         self.description = self.experiment_info['description']
 
     def unload(self, *largs):
+        self.experiment.clear_widgets()
         self.container.remove_widget(self.experiment)
         self.controls.clear_widgets()
         self.experiment = None

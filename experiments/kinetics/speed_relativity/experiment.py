@@ -38,7 +38,7 @@ class Boat(PhysicsObject):
     pass
 
 
-class MyExperimentWindow(ExperimentWindow):
+class SpeedRelativityExperimentWindow(ExperimentWindow):
     boat_speed = SliderControl(label="Boat speed",
                                description="Speed value of the boat",
                                min=1, max=20, value=5.0, dim=' m/s')
@@ -130,7 +130,7 @@ class MyExperimentWindow(ExperimentWindow):
 
 
 def load_experiment():
-    main_widget = MyExperimentWindow()
+    main_widget = SpeedRelativityExperimentWindow()
     return main_widget
 
 
