@@ -8,21 +8,6 @@ from core.widgets.catalogItem import CatalogItem
 
 __author__ = 'gipzo'
 
-Builder.load_string('''
-<CategoryScreen>:
-    name: 'category'
-    grid: grid
-    ScrollView:
-        size_hint: 1, 1
-        StackLayout:
-            id: grid
-            padding: '32sp'
-            spacing: '32sp'
-            size_hint_y: None
-            height: self.minimum_height
-
-''')
-
 
 class CategoryScreen(Screen):
     grid = ObjectProperty()

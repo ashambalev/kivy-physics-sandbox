@@ -1,18 +1,6 @@
-from kivy.lang import Builder
 from kivy.properties import ListProperty, NumericProperty, ReferenceListProperty
 from kivy.uix.widget import Widget
 
-Builder.load_string('''
-
-<LineWidget>:
-    canvas:
-        Color:
-            rgba: self.color
-        Line:
-            points: self.start_x, self.start_y, self.end_x, self.end_y
-            width: self.width
-
-''')
 
 class LineWidget(Widget):
     start_x = NumericProperty(0.0)

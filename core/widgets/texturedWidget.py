@@ -1,24 +1,6 @@
 from kivy.core.image import Image
-from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty, ListProperty
 from kivy.uix.widget import Widget
-
-
-Builder.load_string('''
-<TexturedWidget>:
-    canvas:
-        Color:
-            rgba: self.color
-        Rectangle:
-            pos: self.pos
-            size: self.size
-            texture: self.texture if self.texture else None
-            tex_coords: self.offset_x,          self.offset_y,\
-                        self.offset_x + self.w, self.offset_y,\
-                        self.offset_x + self.w, self.offset_y + self.h,\
-                        self.offset_x,          self.offset_y + self.h
-
-''')
 
 
 class TexturedWidget(Widget):

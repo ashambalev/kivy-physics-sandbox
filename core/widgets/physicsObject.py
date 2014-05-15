@@ -2,33 +2,9 @@
 import collections
 import math
 
-from kivy.lang import Builder
 from kivy.properties import NumericProperty, StringProperty, ListProperty, BooleanProperty
 from kivy.uix.widget import Widget
 from core.widgets.vectorWidget import VectorWidget
-
-Builder.load_string('''
-<PhysicsObject>:
-    canvas:
-        PushMatrix
-        Color:
-            rgba: 1, 1, 1, 0.6 if self.show_trajectory else 0.0
-        Line:
-            points: [self.x, self.y] + [x for t in self._trajectory for x in t]
-            width: 2
-        Translate:
-            xy: self.pos
-        Rotate:
-            angle: -self.angle
-            axis: 0, 0, 1
-        Color:
-            rgba: self.color
-        Rectangle:
-            size: self.size[0]*self.scale, self.size[1]*self.scale
-            pos: -self.width/2.0*self.scale, -self.height/2.0*self.scale
-            source: self.source
-        PopMatrix
-''')
 
 
 class PhysicsObject(Widget):

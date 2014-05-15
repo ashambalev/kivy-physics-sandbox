@@ -1,29 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
-from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
 from core.widgets.catalogItem import CatalogItem
 
 __author__ = 'gipzo'
 
-Builder.load_string('''
-<MainScreen>:
-    name: 'main'
-    grid: grid
-    ScrollView:
-        size_hint: 1, 1
-        StackLayout:
-            id: grid
-
-            padding: '32sp'
-            spacing: '16sp'
-            size_hint_y: None
-            height: self.minimum_height
-
-''')
-
 EXPERIMENTS_DIR = './experiments/'
+
 
 class MainScreen(Screen):
     grid = ObjectProperty()

@@ -2,87 +2,11 @@
 from kivy import platform
 from kivy.base import stopTouchApp
 from kivy.core.window import Window, Keyboard
-from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from core.categoryScreen import CategoryScreen
 from core.mainScreen import MainScreen
 from core.experimentScreen import ExperimentScreen
-
-Builder.load_string('''
-<MainLayout>:
-    tabs_button: tabs_button
-    timeline_button: timeline_button
-    orientation: 'vertical'
-    screen_manager: screen_manager
-    canvas:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            source: 'data/bg.jpg'
-            size:root.size
-            pos:root.pos
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint: 1.0, None
-        height: '64sp'
-
-        BoxLayout:
-            orientation: 'vertical'
-            padding: '8sp'
-
-            Label:
-                text: root.screen_manager.current_screen.title if root.screen_manager.current_screen else 'Kivy physics sandbox'
-                font_size: '20sp'
-                bold: True
-                halign: 'left'
-                text_size: self.size
-            Label:
-                text: root.screen_manager.current_screen.description if root.screen_manager.current_screen else 'Select category'
-                halign: 'left'
-                text_size: self.size
-
-        StackLayout:
-            orientation: 'rl-tb'
-            spacing: '8sp'
-            padding: '8sp'
-            Button:
-                text: ''
-                border: 3,3,3,3
-                background_down: 'data/home.png'
-                background_normal: self.background_down
-                size_hint: None, None
-                size: sp(64-16), sp(64-16)
-                on_press: root.go_main()
-            ToggleButton:
-                id: timeline_button
-                text: ''
-                border: 3,3,3,3
-                background_down: 'data/timeline_down.png'
-                background_normal: 'data/timeline_normal.png'
-                background_disabled_normal: 'data/timeline_disabled.png'
-                background_disabled_down: 'data/timeline_disabled.png'
-                disabled: root.screen_manager.current is not 'experiment'
-                size_hint: None, None
-                size: sp(64-16), sp(64-16)
-                on_press: root.toggle_timeline()
-
-            ToggleButton:
-                id: tabs_button
-                text: ''
-                border: 3,3,3,3
-                background_down: 'data/tabs_down.png'
-                background_normal: 'data/tabs_normal.png'
-                background_disabled_normal: 'data/tabs_disabled.png'
-                background_disabled_down: 'data/tabs_disabled.png'
-                size_hint: None, None
-                disabled: root.screen_manager.current is not 'experiment'
-                size: sp(64-16), sp(64-16)
-                on_press: root.toggle_tabs()
-
-    ScreenManager:
-        id: screen_manager
-''')
 
 
 class MainLayout(BoxLayout):
