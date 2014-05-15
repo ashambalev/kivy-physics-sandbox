@@ -3,6 +3,7 @@ import math
 from kivy.metrics import sp, Metrics
 from kivy.uix.image import Image
 from kivy.uix.label import Label
+from kivy.utils import boundary
 
 from core.widgets.controls.sliderControl import SliderControl
 from core.widgets.experimentWindow import ExperimentWindow
@@ -59,7 +60,7 @@ class CannonExperimentWindow(ExperimentWindow):
                                min=250, max=500, value=320.0, dim=' m/s')
     cannon_angle = SliderControl(label="Angle of the cannon",
                                  description="",
-                                 min=-170.0, max=170.0, value=45.0, dim=u' \u00b0')
+                                 min=-90.0, max=90.0, value=45.0, dim=u' \u00b0')
     wind_speed = SliderControl(label="Wind speed",
                                description="Speed value of the wind",
                                min=-20, max=20, value=0.0, dim=' m/s')
@@ -106,6 +107,15 @@ class CannonExperimentWindow(ExperimentWindow):
         self.add_widget(self.cannon_base)
         self.add_widget(self.ball)
         self.add_widget(self.cannon)
+        self.bind(on_drag=self.update_angle)
+
+    def update_angle(self, widget, touch):
+        touch_x, touch_y = touch.x, touch.y
+        angle = math.atan2(touch_y - self.cannon.y, touch_x - self.cannon.y)
+        angle = 90-angle * 180 / math.pi
+        angle = boundary(angle, -85.0, 85.0)
+        self.cannon_angle.value = angle
+        self.update()
 
     def reset(self, *largs):
         super(CannonExperimentWindow, self).reset(*largs)

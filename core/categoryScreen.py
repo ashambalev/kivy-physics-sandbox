@@ -37,5 +37,3 @@ class CategoryScreen(Screen):
     def open_experiment(self, *largs):
         widget = largs[0]
         self.mainLayout.open_experiment(widget.category, widget.name)
-
-    pass

@@ -2,6 +2,8 @@
 import math
 
 from kivy.properties import NumericProperty, ObjectProperty
+from kivy.uix.behaviors import DragBehavior
+from kivy.utils import boundary
 
 from core.widgets.controls.sliderControl import SliderControl
 from core.widgets.experimentWindow import ExperimentWindow
@@ -11,7 +13,6 @@ from core.widgets.texturedWidget import TexturedWidget
 
 
 GLASS_WIDTH = 128
-
 
 class RefractionExperimentWindow(ExperimentWindow):
     in_angle = SliderControl(label="Input angle",
@@ -29,7 +30,8 @@ class RefractionExperimentWindow(ExperimentWindow):
     can_change_speed = True
 
     def load(self, *largs):
-        self.torch = PhysicsObject(source=self.get_file('data/torch.png'))
+        self.torch = PhysicsObject(source=self.get_file('data/torch.png'), draggable=True)
+        self.torch.bind(on_drag=self.set_ray_angle)
         self.glass = TexturedWidget(source=self.get_file('data/glass.png'), scale=GLASS_WIDTH / 256.0)
         self.line_in = LineWidget(width=3.0)
         self.line_glass = LineWidget(width=3.0)
@@ -71,14 +73,20 @@ class RefractionExperimentWindow(ExperimentWindow):
         l = math.sqrt(GLASS_WIDTH * GLASS_WIDTH + math.pow(GLASS_WIDTH / math.tan(math.atan2(cosy, siny)), 2))
         self.line_glass.end = (self.line_glass.start[0] + l * cosy, self.line_glass.start[1] + l * siny)
 
-        #sina = math.fabs(self.line_glass.start_y - self.line_glass.end_y) / l
-        #if self.in_angle.value < 0.0:
-        #    sina *= -1
-        siny = sina / self.refractive_index.value
         cosy = math.sqrt(1 - sina * sina)
         l = self.size[0]
         self.line_out.start = self.line_glass.end
         self.line_out.end = (self.line_out.start[0] + l * cosy, self.line_out.start[1] + l * sina)
+
+    def set_ray_angle(self, widget, touch):
+        touch_x, touch_y = touch.x, touch.y
+        angle = math.atan2(touch_y - self.line_in.end_y, touch_x - self.line_in.end_x)
+        angle = angle * 180 / math.pi + 180
+        if (angle > 180):
+            angle -= 360
+        angle = boundary(angle, -85.0, 85.0)
+        self.in_angle.value = angle
+        self.update()
 
 
     def on_size(self, *largs):

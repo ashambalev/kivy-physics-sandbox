@@ -20,6 +20,11 @@ class PhysicsObject(Widget):
     _trajectory_points = 100
     _trajectory_resolution = 0.05
     show_trajectory = BooleanProperty(False)
+    draggable = BooleanProperty(False)
+
+    def __init__(self, **kwargs):
+        self.register_event_type('on_drag')
+        super(PhysicsObject, self).__init__(**kwargs)
 
     def add_vector(self, name, title, length, angle=0.0, color=(1, 1, 1, 1), mode='object'):
         self._vectors[name] = VectorWidget(title=title, length=length, angle=angle, color=color, mode=mode)
@@ -68,3 +73,37 @@ class PhysicsObject(Widget):
 
     def init(self, *largs):
         self.clear_trajectory()
+
+    def on_drag(self, touch):
+        pass
+
+    def collide_point(self, x, y):
+        max_size = max(self.width, self.height) / 2
+        return self.x - max_size < x < self.x + max_size and self.y - max_size < y < self.y + max_size
+
+    def on_touch_down(self, touch):
+        if super(PhysicsObject, self).on_touch_down(touch):
+            return True
+        if touch.is_mouse_scrolling:
+            return False
+        if not self.collide_point(touch.x, touch.y):
+            return False
+        if self in touch.ud:
+            return False
+        touch.grab(self)
+        touch.ud[self] = True
+        return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is self:
+            self.dispatch('on_drag', touch)
+            return True
+        if super(PhysicsObject, self).on_touch_move(touch):
+            return True
+        return self in touch.ud
+
+    def on_touch_up(self, touch):
+        if touch.grab_current is not self:
+            return super(PhysicsObject, self).on_touch_up(touch)
+        touch.ungrab(self)
+        return True

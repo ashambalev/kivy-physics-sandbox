@@ -41,9 +41,7 @@ class MainLayout(BoxLayout):
                 self.experiment_layout.toggle_tabs()
         return True
 
-
     def on_keyboard(self, window, key, scancode, codepoint, modifier):
-        print key
         if key in (8, 27) or key == Keyboard.keycodes['escape']:  # Backspace or escape
             if self.screen_manager.current == 'main':
                 stopTouchApp()
@@ -76,6 +74,3 @@ class MainLayout(BoxLayout):
     def open_experiment(self, category, name):
         self.experiment_layout.load_experiment(category, name)
         self.screen_manager.current = self.experiment_layout.name
-
-
-    pass

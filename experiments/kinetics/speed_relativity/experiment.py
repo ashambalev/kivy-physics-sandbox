@@ -81,6 +81,17 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
         self.add_widget(self.boat)
 
         self.add_widget(self.speed_label)
+        self.bind(on_drag=self.update_angle)
+
+
+    def update_angle(self, widget, touch):
+        touch_x, touch_y = touch.x, touch.y
+        angle = math.atan2(touch_y - self.boat.y, touch_x - self.boat.x)
+        angle = 90 - angle * 180 / math.pi
+        if angle > 180:
+            angle -= 360
+        self.boat_angle.value = angle
+        self.update()
 
 
     def reset(self, *largs):

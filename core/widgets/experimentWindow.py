@@ -12,8 +12,8 @@ class ExperimentWindow(Widget):
     can_change_speed = BooleanProperty(True)
 
     def __init__(self, **kwargs):
+        self.register_event_type('on_drag')
         super(ExperimentWindow, self).__init__(**kwargs)
-
         self.scale = Metrics.density
 
     def load(self, *largs):
@@ -32,3 +32,37 @@ class ExperimentWindow(Widget):
                     controls.add_widget(getattr(self, name))
 
                     getattr(self, name).bind(on_value_changed=self.update)
+
+
+    def on_drag(self, touch):
+        pass
+
+    def collide_point(self, x, y):
+        return self.x < x < self.x + self.size[0] and self.y < y < self.y + self.size[1]
+
+    def on_touch_down(self, touch):
+        if super(ExperimentWindow, self).on_touch_down(touch):
+            return True
+        if touch.is_mouse_scrolling:
+            return False
+        if not self.collide_point(touch.x, touch.y):
+            return False
+        if self in touch.ud:
+            return False
+        touch.grab(self)
+        touch.ud[self] = True
+        return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is self:
+            self.dispatch('on_drag', touch)
+            return True
+        if super(ExperimentWindow, self).on_touch_move(touch):
+            return True
+        return self in touch.ud
+
+    def on_touch_up(self, touch):
+        if touch.grab_current is not self:
+            return super(ExperimentWindow, self).on_touch_up(touch)
+        touch.ungrab(self)
+        return True
