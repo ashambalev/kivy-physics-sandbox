@@ -11,3 +11,7 @@ This widget is used to draw tiled textured areas.
 `scale` - texture scale (default: 1.0)
 
 `color` - color tint of texture (default: [1, 1, 1, 1])
+
+## Events
+
+`on_drag(widget, touch)` - fires, when user drags `TexturedWidget`

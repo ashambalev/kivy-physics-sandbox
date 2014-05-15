@@ -36,3 +36,7 @@ def update(self, *largs):
 ```
 
 You can also use default kivy method `on_size` to set widgets' sizes and position
+
+## Events
+
+`on_drag(widget, touch)` - fires, when user drag mouse or touch over experiment window
