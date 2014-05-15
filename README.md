@@ -10,7 +10,7 @@ Works on Windows, Ubuntu, OS X, Android tablet and Android phone (but difficult 
 Installation
 ============
 
-#### Linux, OS X
+#### Linux
 
 ```bash
 git clone https://github.com/Gipzo/kivy-physics-sandbox.git
@@ -19,9 +19,13 @@ pip install -r requirements.txt
 
 Run application by executing `python main.py`
 
+#### Mac OS
+
+[Mac OS X Release](https://github.com/Gipzo/kivy-physics-sandbox/releases/download/0.1/KivyPhysicsSandbox-osx.dmg)
+
 #### Windows
 
-[Win32 Release](https://github.com/Gipzo/kivy-physics-sandbox/releases/download/0.1/KivyPhysicsSandbox-win32.tar.gz)
+[Win32 Release](https://github.com/Gipzo/kivy-physics-sandbox/releases/download/0.1/KivyPhysicsSandbox-win32.exe)
 
 #### Android
 
