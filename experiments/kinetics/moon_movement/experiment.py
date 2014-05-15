@@ -31,11 +31,12 @@ class Moon(PhysicsObject):
         Vg = -G * self.earth_mass / r2
         Vg_x = earth_vector[0] * Vg
         Vg_y = earth_vector[1] * Vg
-        self.total_speed_x += Vg_x*dt
-        self.total_speed_y += Vg_y*dt
-        self.total_speed = math.sqrt(self.total_speed_x * self.total_speed_x + self.total_speed_y * self.total_speed_y)
+        self.total_speed_x += Vg_x * dt
+        self.total_speed_y += Vg_y * dt
+        self.total_speed = math.sqrt(self.total_speed_x * self.total_speed_x +
+                                     self.total_speed_y * self.total_speed_y)
 
-        self.update_vector('moon_speed', self.total_speed/4.0,
+        self.update_vector('moon_speed', self.total_speed / 4.0,
                            90 - math.atan2(self.total_speed_y, self.total_speed_x) * 180.0 / math.pi)
         self.update_vector('gravity', self.mass * self.earth_mass / 10.0 + 2.0,
                            90 - math.atan2(Vg_y, Vg_x) * 180.0 / math.pi)
@@ -83,12 +84,9 @@ class MoonMovementExperimentWindow(ExperimentWindow):
         self.add_widget(self.moon)
         self.add_widget(self.info_label)
 
-
     def reset(self, *largs):
         self.moon.clear_trajectory()
-
         self.update()
-
 
     def update(self, *largs):
         try:
@@ -121,6 +119,3 @@ class MoonMovementExperimentWindow(ExperimentWindow):
 def load_experiment():
     main_widget = MoonMovementExperimentWindow()
     return main_widget
-
-
-

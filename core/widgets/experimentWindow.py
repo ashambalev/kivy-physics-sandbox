@@ -30,9 +30,7 @@ class ExperimentWindow(Widget):
             if hasattr(getattr(self, name), '__class__'):
                 if getattr(self, name).__class__.__name__ in ["SliderControl", "CheckControl"]:
                     controls.add_widget(getattr(self, name))
-
                     getattr(self, name).bind(on_value_changed=self.update)
-
 
     def on_drag(self, touch):
         pass

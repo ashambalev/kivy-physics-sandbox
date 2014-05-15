@@ -31,5 +31,3 @@ class MainScreen(Screen):
     def on_category(self, *largs):
         widget = largs[0]
         self.mainLayout.select_category(widget.name)
-
-    pass

@@ -35,8 +35,6 @@ class Boat(PhysicsObject):
         self.x += total_speed_x * dt * self.scale
         self.y += total_speed_y * dt * self.scale
 
-    pass
-
 
 class SpeedRelativityExperimentWindow(ExperimentWindow):
     boat_speed = SliderControl(label="Boat speed",
@@ -72,7 +70,8 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
         self.river = TexturedWidget(source=self.get_file('data/river.png'))
         self.riverside_bottom = TexturedWidget(source=self.get_file('data/riverside.png'))
         self.riverside_top = TexturedWidget(source=self.get_file('data/riverside.png'))
-        self.speed_label = Label(text='0.0 m/s', font_size=sp(16), bold=True, halign='center', valign='middle')
+        self.speed_label = Label(text='0.0 m/s', font_size=sp(16),
+                                 bold=True, halign='center', valign='middle')
 
         self.add_widget(self.river)
         self.add_widget(self.riverside_bottom)
@@ -83,7 +82,6 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
         self.add_widget(self.speed_label)
         self.bind(on_drag=self.update_angle)
 
-
     def update_angle(self, widget, touch):
         touch_x, touch_y = touch.x, touch.y
         angle = math.atan2(touch_y - self.boat.y, touch_x - self.boat.x)
@@ -93,7 +91,6 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
         self.boat_angle.value = angle
         self.update()
 
-
     def reset(self, *largs):
         self.boat_speed.value = 5.0
         self.river_speed.value = 5.0
@@ -101,7 +98,6 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
         self.boat.x, self.boat.y = sp(100), sp(RIVERSIDE_SIZE + BOAT_HEIGHT / 2)
         self.boat.init()
         self.update()
-
 
     def update(self, *largs):
         try:
@@ -143,6 +139,3 @@ class SpeedRelativityExperimentWindow(ExperimentWindow):
 def load_experiment():
     main_widget = SpeedRelativityExperimentWindow()
     return main_widget
-
-
-

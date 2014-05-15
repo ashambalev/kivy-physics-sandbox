@@ -21,6 +21,7 @@ class SliderControl(BaseControl):
         self.slider.value = self.value
         self.slider.min = self.min
         self.slider.max = self.max
+
     def on_value(self, *largs):
         if self.slider is not None:
             self.slider.value = self.value
@@ -31,5 +32,3 @@ class SliderControl(BaseControl):
     def update_value(self, *largs):
         self.value = self.slider.value
         self.dispatch('on_value_changed', self.value)
-
-    pass
