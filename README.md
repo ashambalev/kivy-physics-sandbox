@@ -3,7 +3,7 @@ Kivy Physics Sandbox
 
 Kivy Physics Sandbox is educational application for visualizing different physics-based experiments.
 
-The main feature of this application is ability to quickly develop new experiments using application' provided classes.
+The main feature of this application is interactivity and ability to quickly develop new experiments using application' provided classes.
 
 Experiments are dynamically populated from `experiments` folder. Each experiment must have this folder structure:
 
