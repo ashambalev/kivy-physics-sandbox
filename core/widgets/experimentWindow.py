@@ -49,6 +49,7 @@ class ExperimentWindow(Widget):
             return False
         touch.grab(self)
         touch.ud[self] = True
+        self.dispatch('on_drag', touch)
         return True
 
     def on_touch_move(self, touch):
@@ -62,5 +63,6 @@ class ExperimentWindow(Widget):
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
             return super(ExperimentWindow, self).on_touch_up(touch)
+        self.dispatch('on_drag', touch)
         touch.ungrab(self)
         return True

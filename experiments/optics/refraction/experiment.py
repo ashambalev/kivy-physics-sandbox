@@ -2,7 +2,6 @@
 import math
 
 from kivy.properties import NumericProperty, ObjectProperty
-from kivy.uix.behaviors import DragBehavior
 from kivy.utils import boundary
 
 from core.widgets.controls.sliderControl import SliderControl
@@ -81,7 +80,7 @@ class RefractionExperimentWindow(ExperimentWindow):
         touch_x, touch_y = touch.x, touch.y
         angle = math.atan2(touch_y - self.line_in.end_y, touch_x - self.line_in.end_x)
         angle = angle * 180 / math.pi + 180
-        if (angle > 180):
+        if angle > 180:
             angle -= 360
         angle = boundary(angle, -85.0, 85.0)
         self.in_angle.value = angle
