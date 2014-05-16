@@ -1,4 +1,5 @@
 #!/usr/bin/kivy
+__version__ = '0.1'
 import kivy
 from core.mainLayout import MainLayout
 

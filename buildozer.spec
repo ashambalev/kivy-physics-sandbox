@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,ico
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = dist
+source.exclude_dirs = dist,docs
 
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
@@ -32,7 +32,7 @@ version.filename = %(source.dir)s/main.py
 # version = 1.2.0
 
 # (list) Application requirements
-requirements = kivy
+requirements = kivy,docutils
 
 # (list) Garden requirements
 #garden_requirements =
